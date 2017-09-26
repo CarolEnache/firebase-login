@@ -28,13 +28,40 @@ firebase.initializeApp(config);
    });
   }
 
+  signup(){
+
+    const email = this.refs.email.value;
+    const password = this.refs.password.value;
+    console.log(email, password);
+
+    const auth =  firebase.auth();
+
+    const promise = auth.createUserWithEmailAndPassword(email, password);
+
+    promise
+      .then(user =>{
+        var err = "Welcome" + user.email;
+        firebase.database().ref('user/' + user.uid).set({
+          email: user.email
+        }); 
+        console.log(user);
+        this.setState({err:err});
+      });
+      promise 
+      .catch(e => {
+        var err = e.message;
+        console.log(err);
+        this.setState(({err:err}));
+      });
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       err: ''
     };
     this.login = this.login.bind(this);
-    
+    this.signup = this.signup.bind(this);
   }
   
 
@@ -45,7 +72,7 @@ firebase.initializeApp(config);
           <input id='pass' ref='password' type='password' placeholder='Enter your password'/><br />
           <p>{this.state.err}</p>
           <button onClick={this.login}>Login</button>
-          <button>Sign up</button>
+          <button onClick={this.signup}>Sign up</button>
           <button>Log out</button>
       </div>
     )
