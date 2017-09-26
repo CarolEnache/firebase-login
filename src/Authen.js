@@ -19,8 +19,12 @@ firebase.initializeApp(config);
     console.log(email, password)
     const auth = firebase.auth();
     const promise = auth.signInWithEmailAndPassword(email, password);
+    // TODO: write a welcome message for the user
+    promise.then(user =>{
+      var lout = document.getElementById('logout');
+      lout.classList.remove('hide');
+    });
 
-    // todo: handle login promise
     promise.catch(e => {
       var err = e.message;
       console.log(err);
@@ -55,6 +59,13 @@ firebase.initializeApp(config);
       });
   }
 
+  logout(){
+    firebase.auth().signOut();
+    var lout = document.getElementById('logout');
+
+    lout.classList.add('hide');
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -62,6 +73,7 @@ firebase.initializeApp(config);
     };
     this.login = this.login.bind(this);
     this.signup = this.signup.bind(this);
+    this.logout = this.logout.bind(this);
   }
   
 
@@ -73,7 +85,7 @@ firebase.initializeApp(config);
           <p>{this.state.err}</p>
           <button onClick={this.login}>Login</button>
           <button onClick={this.signup}>Sign up</button>
-          <button>Log out</button>
+          <button onClick={this.logout} id='logout' className='hide'>Log out</button>
       </div>
     )
   }
