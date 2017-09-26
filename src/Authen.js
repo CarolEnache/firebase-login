@@ -68,6 +68,23 @@ firebase.initializeApp(config);
 
   google(){
     console.log('i am in google method')
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+    var promise = firebase.auth().signInWithPopup(provider);
+
+    promise.then(result =>{
+      var user = result.user;
+      console.log(result);
+      firebase.database().ref('user/'+user.uid).set({
+        email: user.email,
+        name: user.displayName
+      });
+
+    });
+    promise.catch(e =>{
+      var msg = e.message;
+      console.log(msg);
+    });
   }
 
   constructor(props) {
