@@ -15,7 +15,8 @@ firebase.initializeApp(config);
   render() {
     return (
       <div>
-        <p>This comes from the Firebase-login component</p>
+          <input id='email' ref='email' type='email' placeholder='Enter your email'/><br />
+          <input id='pass' ref='password' type='password' placeholder='Enter your password'/><br />
       </div>
     )
   }
